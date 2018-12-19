@@ -39,6 +39,19 @@ function todos(state = [], action) {
   }
 }
 
+function goals(state = [], action) {
+  switch (action.type) {
+    case 'ADD_GOAL':
+      return state.concat([action.todo]);
+    case 'REMOVE_GOAL':
+      return state.filter(goal => {
+        return goal.id !== action.id;
+      });
+    default:
+      return state;
+  }
+}
+
 function createStore(reducer) {
   //4 parts of the store
   //1 - State
