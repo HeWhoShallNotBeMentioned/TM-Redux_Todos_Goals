@@ -1,26 +1,3 @@
-// {
-//  type: "REMOVE_TODO",
-//  id: 0
-// }
-
-// {
-//   type: "TOGGLE_TODO",
-//   id: 0
-//  }
-
-//  {
-//    type: 'ADD_GOAL',
-//    goal: {
-//      id: 0,
-//      name: 'Run a marathon',
-//    }
-//  }
-
-//  {
-//    type: 'REMOVE_GOAL',
-//    id: 0
-//  }
-
 function todos(state = [], action) {
   switch (action.type) {
     case 'ADD_TODO':
@@ -42,7 +19,7 @@ function todos(state = [], action) {
 function goals(state = [], action) {
   switch (action.type) {
     case 'ADD_GOAL':
-      return state.concat([action.todo]);
+      return state.concat([action.goal]);
     case 'REMOVE_GOAL':
       return state.filter(goal => {
         return goal.id !== action.id;
@@ -50,6 +27,13 @@ function goals(state = [], action) {
     default:
       return state;
   }
+}
+
+function rootReducer(state = {}, action) {
+  return {
+    todos: todos(state.todos, action),
+    goals: goals(state.goals, action),
+  };
 }
 
 function createStore(reducer) {
@@ -82,7 +66,7 @@ function createStore(reducer) {
   };
 }
 
-const store = createStore(todos);
+const store = createStore(rootReducer);
 store.subscribe(() => {
   console.log('the new state is: ', store.getState());
 });
