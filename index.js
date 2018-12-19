@@ -1,11 +1,4 @@
-{
-  type: 'ADD_TODO',
-  todo: {
-    id:0,
-    name: 'Learn Redux',
-    complete: false
-  }
-}
+
 {
  type: "REMOVE_TODO",
  id: 0
@@ -37,7 +30,7 @@
    return state
  }
 
-function createStore() {
+function createStore(reducer) {
   //4 parts of the store
   //1 - State
   //2 - way to get State
@@ -55,8 +48,25 @@ function createStore() {
     };
   };
 
+  const dispatch = (action) => {
+    state = reducer(state, action);
+    listeners.forEach((listener) => listener())
+
+  }
+
   return {
     getState,
     subscribe,
+    dispatch
   };
 }
+
+const store = createStore(todos);
+store.dispatch({
+  type: 'ADD_TODO',
+  todo: {
+    id:0,
+    name: 'Learn Redux',
+    complete: false
+  }
+})
