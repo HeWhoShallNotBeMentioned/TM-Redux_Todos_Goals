@@ -97,6 +97,15 @@ const checker = store => next => action => {
   return next(action);
 };
 
+const logger = store => next => action => {
+  console.group(action.type);
+  console.log('The action: ', action);
+  const result = next(action);
+  console.log('The new state: ', store.getState());
+  console.groupEnd();
+  return result;
+};
+
 function todos(state = [], action) {
   switch (action.type) {
     case ADD_TODO:
@@ -140,7 +149,7 @@ const store = Redux.createStore(
     todos,
     goals,
   }),
-  Redux.applyMiddleware(checker)
+  Redux.applyMiddleware(checker, logger)
 );
 
 store.subscribe(() => {
