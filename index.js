@@ -1,3 +1,11 @@
+function generateId() {
+  return (
+    Math.random()
+      .toString(36)
+      .substring(2) + new Date().getTime().toString(36)
+  );
+}
+
 //download via NPM
 function createStore(reducer) {
   //4 parts of the store
@@ -10,6 +18,7 @@ function createStore(reducer) {
   let listeners = [];
 
   const getState = () => state;
+
   const subscribe = listener => {
     listeners.push(listener);
     return () => {
@@ -51,10 +60,10 @@ function removeTodoAction(todoId) {
   };
 }
 
-function toggleTodoAction(todo) {
+function toggleTodoAction(todoId) {
   return {
     type: TOGGLE_TODO,
-    todo: todo,
+    id: todoId,
   };
 }
 
@@ -112,16 +121,14 @@ function rootReducer(state = {}, action) {
 
 const store = createStore(rootReducer);
 store.subscribe(() => {
-  console.log('the new state is: ', store.getState());
-});
+  const { goals, todos } = store.getState();
 
-function generateId() {
-  return (
-    Math.random()
-      .toString(36)
-      .substring(2) + new Date().getTime().toString(36)
-  );
-}
+  document.getElementById('goals').innerHTML = '';
+  document.getElementById('todos').innerHTML = '';
+
+  goals.forEach(addGoalToDOM);
+  todos.forEach(addTodoToDOM);
+});
 
 // store.dispatch(
 //   addTodoAction({
@@ -200,6 +207,26 @@ function addGoal() {
       name: name,
     })
   );
+}
+
+function addTodoToDOM(todo) {
+  const node = document.createElement('li');
+  const text = document.createTextNode(todo.name);
+  node.appendChild(text);
+  node.style.textDecoration = todo.complete ? 'line-through' : 'none';
+  node.addEventListener('click', () => {
+    store.dispatch(toggleTodoAction(todo.id));
+  });
+
+  document.getElementById('todos').appendChild(node);
+}
+
+function addGoalToDOM(goal) {
+  const node = document.createElement('li');
+  const text = document.createTextNode(goal.name);
+  node.appendChild(text);
+
+  document.getElementById('goals').appendChild(node);
 }
 
 document.getElementById('todoBtn').addEventListener('click', addTodo);
