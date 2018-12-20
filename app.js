@@ -2,11 +2,11 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <Todos />
+        <Todos store={this.props.store} />
         <Goals />
       </div>
     );
   }
 }
 
-ReactDOM.render(<App />, document.getElementById('app'));
+ReactDOM.render(<App store={store} />, document.getElementById('app'));
