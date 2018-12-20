@@ -7,36 +7,36 @@ function generateId() {
 }
 
 //download via NPM
-function createStore(reducer) {
-  //4 parts of the store
-  //1 - State
-  //2 - way to get State
-  //3 - way to listen for changes to State
-  //4 - way to update State
+// function createStore(reducer) {
+//   //4 parts of the store
+//   //1 - State
+//   //2 - way to get State
+//   //3 - way to listen for changes to State
+//   //4 - way to update State
 
-  let state;
-  let listeners = [];
+//   let state;
+//   let listeners = [];
 
-  const getState = () => state;
+//   const getState = () => state;
 
-  const subscribe = listener => {
-    listeners.push(listener);
-    return () => {
-      listeners = listeners.filter(l => l !== listener);
-    };
-  };
+//   const subscribe = listener => {
+//     listeners.push(listener);
+//     return () => {
+//       listeners = listeners.filter(l => l !== listener);
+//     };
+//   };
 
-  const dispatch = action => {
-    state = reducer(state, action);
-    listeners.forEach(listener => listener());
-  };
+//   const dispatch = action => {
+//     state = reducer(state, action);
+//     listeners.forEach(listener => listener());
+//   };
 
-  return {
-    getState,
-    subscribe,
-    dispatch,
-  };
-}
+//   return {
+//     getState,
+//     subscribe,
+//     dispatch,
+//   };
+//}
 //application code we write
 //constants
 const ADD_TODO = 'ADD_TODO';
@@ -112,14 +112,14 @@ function goals(state = [], action) {
   }
 }
 
-function rootReducer(state = {}, action) {
-  return {
-    todos: todos(state.todos, action),
-    goals: goals(state.goals, action),
-  };
-}
+// function rootReducer(state = {}, action) {
+//   return {
+//     todos: todos(state.todos, action),
+//     goals: goals(state.goals, action),
+//   };
+// }
 
-const store = createStore(rootReducer);
+const store = Redux.createStore(Redux.combineReducers({ todos, goals }));
 store.subscribe(() => {
   const { goals, todos } = store.getState();
 
