@@ -19,6 +19,15 @@ class Todos extends React.Component {
       alert('An error occurred. Try again.');
     });
   };
+
+  toggleItem = id => {
+    this.props.store.dispatch(toggleTodoAction(id));
+    return API.saveTodoToggle(id).catch(() => {
+      this.props.store.dispatch(toggleTodoAction(id));
+      alert('An error occurred. Try again.');
+    });
+  };
+
   render() {
     // refs is react feature for getting data from an uncontrolled component
     return (
