@@ -1,23 +1,16 @@
 class Todos extends React.Component {
   addItem = e => {
     e.preventDefault();
-    return API.saveTodo(this.input.value)
-      .then(todo => {
-        this.props.store.dispatch(addTodoAction(todo));
-        this.input.value = '';
-      })
-      .catch(() => alert('There was an error. Try again.'));
+    this.props.store.dispatch(
+      handleAddTodo(this.input.value, () => (this.input.value = ''))
+    );
   };
   removeItem = todo => {
     this.props.store.dispatch(handleDeleteTodo(todo));
   };
 
   toggleItem = id => {
-    this.props.store.dispatch(toggleTodoAction(id));
-    return API.saveTodoToggle(id).catch(() => {
-      this.props.store.dispatch(toggleTodoAction(id));
-      alert('An error occurred. Try again.');
-    });
+    this.props.store.dispatch(handleToggle(id));
   };
 
   render() {
@@ -31,7 +24,11 @@ class Todos extends React.Component {
           ref={input => (this.input = input)}
         />
         <button onClick={this.addItem}>Add Todo</button>
-        <List items={this.props.todos} remove={this.removeItem} />
+        <List
+          toggle={this.toggleItem}
+          items={this.props.todos}
+          remove={this.removeItem}
+        />
       </div>
     );
   }
