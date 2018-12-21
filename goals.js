@@ -1,15 +1,12 @@
 class Goals extends React.Component {
   addItem = e => {
     e.preventDefault();
-    const name = this.input.value;
-    this.input.value = '';
-
-    this.props.store.dispatch(
-      addGoalAction({
-        id: generateId(),
-        name,
+    return API.saveGoal(this.input.value)
+      .then(goal => {
+        this.props.store.dispatch(addGoalAction(goal));
+        this.input.value = '';
       })
-    );
+      .catch(() => alert('There was an error. Try again.'));
   };
 
   removeItem = goal => {
