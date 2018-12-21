@@ -152,81 +152,81 @@ const store = Redux.createStore(
   Redux.applyMiddleware(checker, logger)
 );
 
-store.subscribe(() => {
-  const { goals, todos } = store.getState();
+// store.subscribe(() => {
+//   const { goals, todos } = store.getState();
 
-  document.getElementById('goals').innerHTML = '';
-  document.getElementById('todos').innerHTML = '';
+//   document.getElementById('goals').innerHTML = '';
+//   document.getElementById('todos').innerHTML = '';
 
-  goals.forEach(addGoalToDOM);
-  todos.forEach(addTodoToDOM);
-});
+//   goals.forEach(addGoalToDOM);
+//   todos.forEach(addTodoToDOM);
+// });
 
-function addTodo() {
-  const input = document.getElementById('todo');
-  const name = input.value;
-  input.value = '';
+// function addTodo() {
+//   const input = document.getElementById('todo');
+//   const name = input.value;
+//   input.value = '';
 
-  store.dispatch(
-    addTodoAction({
-      id: generateId(),
-      name: name,
-      complete: false,
-    })
-  );
-}
+//   store.dispatch(
+//     addTodoAction({
+//       id: generateId(),
+//       name: name,
+//       complete: false,
+//     })
+//   );
+// }
 
-function addGoal() {
-  const input = document.getElementById('goal');
-  const name = input.value;
-  input.value = '';
+// function addGoal() {
+//   const input = document.getElementById('goal');
+//   const name = input.value;
+//   input.value = '';
 
-  store.dispatch(
-    addGoalAction({
-      id: generateId(),
-      name: name,
-    })
-  );
-}
+//   store.dispatch(
+//     addGoalAction({
+//       id: generateId(),
+//       name: name,
+//     })
+//   );
+// }
 
-function createRemoveButton(onClick) {
-  const removeBtn = document.createElement('button');
-  removeBtn.innerHTML = 'X';
-  removeBtn.addEventListener('click', onClick);
-  return removeBtn;
-}
+// function createRemoveButton(onClick) {
+//   const removeBtn = document.createElement('button');
+//   removeBtn.innerHTML = 'X';
+//   removeBtn.addEventListener('click', onClick);
+//   return removeBtn;
+// }
 
-function addTodoToDOM(todo) {
-  const node = document.createElement('li');
-  const text = document.createTextNode(todo.name);
+// function addTodoToDOM(todo) {
+//   const node = document.createElement('li');
+//   const text = document.createTextNode(todo.name);
 
-  const removeBtn = createRemoveButton(() => {
-    store.dispatch(removeTodoAction(todo.id));
-  });
+//   const removeBtn = createRemoveButton(() => {
+//     store.dispatch(removeTodoAction(todo.id));
+//   });
 
-  node.appendChild(text);
-  node.appendChild(removeBtn);
+//   node.appendChild(text);
+//   node.appendChild(removeBtn);
 
-  node.style.textDecoration = todo.complete ? 'line-through' : 'none';
-  node.addEventListener('click', () => {
-    store.dispatch(toggleTodoAction(todo.id));
-  });
+//   node.style.textDecoration = todo.complete ? 'line-through' : 'none';
+//   node.addEventListener('click', () => {
+//     store.dispatch(toggleTodoAction(todo.id));
+//   });
 
-  document.getElementById('todos').appendChild(node);
-}
+//   document.getElementById('todos').appendChild(node);
+// }
 
-function addGoalToDOM(goal) {
-  const node = document.createElement('li');
-  const text = document.createTextNode(goal.name);
-  const removeBtn = createRemoveButton(() => {
-    store.dispatch(removeGoalAction(goal.id));
-  });
+// function addGoalToDOM(goal) {
+//   const node = document.createElement('li');
+//   const text = document.createTextNode(goal.name);
+//   const removeBtn = createRemoveButton(() => {
+//     store.dispatch(removeGoalAction(goal.id));
+//   });
 
-  node.appendChild(text);
-  node.appendChild(removeBtn);
+//   node.appendChild(text);
+//   node.appendChild(removeBtn);
 
-  document.getElementById('goals').appendChild(node);
-}
+//   document.getElementById('goals').appendChild(node);
+// }
 
-document.getElementById('todoBtn').addEventListener('click', addTodo);
-document.getElementById('goalBtn').addEventListener('click', addGoal);
+// document.getElementById('todoBtn').addEventListener('click', addTodo);
+// document.getElementById('goalBtn').addEventListener('click', addGoal);

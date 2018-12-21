@@ -15,6 +15,11 @@ class Goals extends React.Component {
   removeItem = goal => {
     this.props.store.dispatch(removeGoalAction(goal.id));
   };
+
+  toggleItem = id => {
+    this.props.store.dispatch(toggleTodoAction(id));
+  };
+
   render() {
     return (
       <div>
@@ -25,7 +30,11 @@ class Goals extends React.Component {
           ref={input => (this.input = input)}
         />
         <button onClick={this.addItem}>Add Goal</button>
-        <List items={this.props.goals} remove={this.removeItem} />
+        <List
+          items={this.props.goals}
+          remove={this.removeItem}
+          toggle={this.toggleItem}
+        />
       </div>
     );
   }
