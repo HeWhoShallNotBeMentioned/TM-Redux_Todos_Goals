@@ -11,6 +11,10 @@ class Goals extends React.Component {
       })
     );
   };
+
+  removeItem = goal => {
+    this.props.store.dispatch(removeGoalAction(goal.id));
+  };
   render() {
     return (
       <div>
@@ -21,7 +25,7 @@ class Goals extends React.Component {
           ref={input => (this.input = input)}
         />
         <button onClick={this.addItem}>Add Goal</button>
-        <List />
+        <List items={this.props.goals} remove={this.removeItem} />
       </div>
     );
   }

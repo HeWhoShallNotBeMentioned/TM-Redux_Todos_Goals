@@ -12,6 +12,9 @@ class Todos extends React.Component {
       })
     );
   };
+  removeItem = todo => {
+    this.props.store.dispatch(removeTodoAction(todo.id));
+  };
   render() {
     // refs is react feature for getting data from an uncontrolled component
     return (
@@ -23,7 +26,7 @@ class Todos extends React.Component {
           ref={input => (this.input = input)}
         />
         <button onClick={this.addItem}>Add Todo</button>
-        <List />
+        <List items={this.props.todos} remove={this.removeItem} />
       </div>
     );
   }
