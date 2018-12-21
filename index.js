@@ -100,6 +100,28 @@ function handleDeleteTodo(todo) {
   };
 }
 
+function handleDeleteGoal(goal) {
+  return dispatch => {
+    dispatch(removeGoalAction(goal.id));
+
+    return API.deleteGoal(goal.id).catch(() => {
+      dispatch(addGoalAction(goal));
+      alert('An error occurred. Try again.');
+    });
+  };
+}
+
+function handleAddGoal(name, cb) {
+  return dispatch => {
+    return API.saveGoal(name)
+      .then(goal => {
+        dispatch(addGoalAction(goal));
+        cb();
+      })
+      .catch(() => alert('There was an error. Try again.'));
+  };
+}
+
 const checker = store => next => action => {
   if (
     action.type === ADD_TODO &&
