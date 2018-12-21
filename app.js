@@ -3,7 +3,7 @@ class App extends React.Component {
     return (
       <div>
         <Todos store={this.props.store} />
-        <Goals />
+        <Goals store={this.props.store} />
       </div>
     );
   }
