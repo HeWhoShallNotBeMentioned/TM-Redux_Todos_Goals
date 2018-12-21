@@ -14,6 +14,11 @@ class Goals extends React.Component {
 
   removeItem = goal => {
     this.props.store.dispatch(removeGoalAction(goal.id));
+
+    return API.deleteGoal(goal.id).catch(() => {
+      this.props.store.dispatch(addGoalAction(goal));
+      alert('An error occurred. Try again.');
+    });
   };
 
   toggleItem = id => {
