@@ -1,13 +1,10 @@
 class App extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
-
     dispatch(handleInitialData());
   }
   render() {
-    const { store } = this.props;
-    const { loading } = store.getState();
-
+    const { loading } = this.props;
     if (loading === true) {
       return <h3>Loading</h3>;
     }
@@ -19,13 +16,39 @@ class App extends React.Component {
     );
   }
 }
-
 const ConnectedApp = connect(state => ({
   loading: state.loading,
 }))(App);
-
 const Context = React.createContext();
-
+function connect(mapStateToProps) {
+  return Component => {
+    class Receiver extends React.Component {
+      componentDidMount() {
+        const { subscribe } = this.props.store;
+        this.unsubcribe = subscribe(() => this.forceUpdate());
+      }
+      componentWillUnmount() {
+        this.unsubcribe();
+      }
+      render() {
+        const { dispatch, getState } = this.props.store;
+        const state = getState();
+        const stateNeeded = mapStateToProps(state);
+        return <Component {...stateNeeded} dispatch={dispatch} />;
+      }
+    }
+    class ConnectedComponent extends React.Component {
+      render() {
+        return (
+          <Context.Consumer>
+            {store => <Receiver store={store} />}
+          </Context.Consumer>
+        );
+      }
+    }
+    return ConnectedComponent;
+  };
+}
 class Provider extends React.Component {
   render() {
     return (
@@ -35,7 +58,6 @@ class Provider extends React.Component {
     );
   }
 }
-
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedApp />
