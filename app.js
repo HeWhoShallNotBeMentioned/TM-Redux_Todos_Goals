@@ -1,10 +1,8 @@
 class App extends React.Component {
   componentDidMount() {
-    const { store } = this.props;
+    const { dispatch } = this.props;
 
-    store.dispatch(handleInitialData());
-
-    store.subscribe(() => this.forceUpdate());
+    dispatch(handleInitialData());
   }
   render() {
     const { store } = this.props;
@@ -22,13 +20,9 @@ class App extends React.Component {
   }
 }
 
-class ConnectedApp extends React.Component {
-  render() {
-    return (
-      <Context.Consumer>{store => <App store={store} />}</Context.Consumer>
-    );
-  }
-}
+const ConnectedApp = connect(state => ({
+  loading: state.loading,
+}))(App);
 
 const Context = React.createContext();
 

@@ -33,16 +33,6 @@ class Goals extends React.Component {
   }
 }
 
-class ConnectedGoals extends React.Component {
-  render() {
-    return (
-      <Context.Consumer>
-        {store => {
-          const { goals } = store.getState();
-
-          return <Goals goals={goals} dispatch={store.dispatch} />;
-        }}
-      </Context.Consumer>
-    );
-  }
-}
+const ConnectedGoals = connect(state => ({
+  goals: state.goals,
+}))(Goals);
