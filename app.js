@@ -8,18 +8,43 @@ class App extends React.Component {
   }
   render() {
     const { store } = this.props;
-    const { todos, goals, loading } = store.getState();
+    const { loading } = store.getState();
 
     if (loading === true) {
       return <h3>Loading</h3>;
     }
     return (
       <div>
-        <Todos todos={todos} store={this.props.store} />
-        <Goals goals={goals} store={this.props.store} />
+        <ConnectedTodos />
+        <ConnectedGoals />
       </div>
     );
   }
 }
 
-ReactDOM.render(<App store={store} />, document.getElementById('app'));
+class ConnectedApp extends React.Component {
+  render() {
+    return (
+      <Context.Consumer>{store => <App store={store} />}</Context.Consumer>
+    );
+  }
+}
+
+const Context = React.createContext();
+
+class Provider extends React.Component {
+  render() {
+    return (
+      <Context.Provider value={this.props.store}>
+        {this.props.children}
+      </Context.Provider>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Provider store={store}>
+    <ConnectedApp />
+  </Provider>,
+  document.getElementById('app')
+);

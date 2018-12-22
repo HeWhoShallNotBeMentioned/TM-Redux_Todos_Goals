@@ -1,16 +1,16 @@
 class Goals extends React.Component {
   addItem = e => {
     e.preventDefault();
-    this.props.store.dispatch(
+    this.props.dispatch(
       handleAddGoal(this.input.value, () => (this.input.value = ''))
     );
   };
   removeItem = goal => {
-    this.props.store.dispatch(handleDeleteGoal(goal));
+    this.props.dispatch(handleDeleteGoal(goal));
   };
 
   toggleItem = id => {
-    this.props.store.dispatch(toggleTodoAction(id));
+    this.props.dispatch(toggleTodoAction(id));
   };
 
   render() {
@@ -29,6 +29,20 @@ class Goals extends React.Component {
           toggle={this.toggleItem}
         />
       </div>
+    );
+  }
+}
+
+class ConnectedGoals extends React.Component {
+  render() {
+    return (
+      <Context.Consumer>
+        {store => {
+          const { goals } = store.getState();
+
+          return <Goals goals={goals} dispatch={store.dispatch} />;
+        }}
+      </Context.Consumer>
     );
   }
 }

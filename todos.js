@@ -1,16 +1,16 @@
 class Todos extends React.Component {
   addItem = e => {
     e.preventDefault();
-    this.props.store.dispatch(
+    this.props.dispatch(
       handleAddTodo(this.input.value, () => (this.input.value = ''))
     );
   };
   removeItem = todo => {
-    this.props.store.dispatch(handleDeleteTodo(todo));
+    this.props.dispatch(handleDeleteTodo(todo));
   };
 
   toggleItem = id => {
-    this.props.store.dispatch(handleToggle(id));
+    this.props.dispatch(handleToggle(id));
   };
 
   render() {
@@ -30,6 +30,20 @@ class Todos extends React.Component {
           remove={this.removeItem}
         />
       </div>
+    );
+  }
+}
+
+class ConnectedTodos extends React.Component {
+  render() {
+    return (
+      <Context.Consumer>
+        {store => {
+          const { todos } = store.getState();
+
+          return <Todos todos={todos} dispatch={store.dispatch} />;
+        }}
+      </Context.Consumer>
     );
   }
 }
